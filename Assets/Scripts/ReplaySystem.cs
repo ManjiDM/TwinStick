@@ -4,32 +4,44 @@ using System;
 
 public class ReplaySystem: MonoBehaviour
 {
-	private const int bufferFrames = 100;
+	private const int bufferFrames = 1000;
 	private Keyframe[] keyFrames = new Keyframe[bufferFrames];
 	private Rigidbody rBody;
-// Use this for initialization
+	private GameManager manager;
+	// Use this for initialization
 
 	void Start ()
 	{
 		rBody = GetComponent <Rigidbody> ();
+		manager = GameObject.FindObjectOfType <GameManager> ();
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		Record ();
+		if (manager.playback) {
+			Playback ();
+		} else {
+			Record ();
+		}
+
 	}
-	void Playback(){
-		rBody.isKinematic = false;
+
+	void Playback ()
+	{
+		rBody.isKinematic = true;
 		int frame = Time.frameCount % bufferFrames;
-		transform.position = keyFrames [frame].pos;
-		transform.position = keyFrames [frame].;
+		Debug.Log ("Reading frame " + frame + "-Result" + keyFrames [frame]);
+		transform.position = keyFrames [frame].position;
+		transform.rotation = keyFrames [frame].rotation;
 	}
 
 	void Record ()
 	{
-		rBody.isKinematic = true;
+		rBody.isKinematic = false;
 		int frame = Time.frameCount % bufferFrames;
+		Debug.Log ("writting to frame " + frame);
+
 		float time = Time.time;
 		keyFrames [frame] = new Keyframe (Time.time, transform.position, transform.rotation);
 	}
@@ -57,8 +69,7 @@ public struct Keyframe
 		}
 	}
 
-	public Vector3 position
-	{
+	public Vector3 position {
 		get {
 			return pos;
 		}
