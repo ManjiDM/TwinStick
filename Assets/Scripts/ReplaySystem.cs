@@ -4,7 +4,7 @@ using System;
 
 public class ReplaySystem: MonoBehaviour
 {
-	private const int bufferFrames = 1000;
+	private const int bufferFrames = 200;
 	private Keyframe[] keyFrames = new Keyframe[bufferFrames];
 	private Rigidbody rBody;
 	private GameManager manager;
@@ -31,7 +31,6 @@ public class ReplaySystem: MonoBehaviour
 	{
 		rBody.isKinematic = true;
 		int frame = Time.frameCount % bufferFrames;
-		Debug.Log ("Reading frame " + frame + "-Result" + keyFrames [frame]);
 		transform.position = keyFrames [frame].position;
 		transform.rotation = keyFrames [frame].rotation;
 	}
@@ -40,8 +39,6 @@ public class ReplaySystem: MonoBehaviour
 	{
 		rBody.isKinematic = false;
 		int frame = Time.frameCount % bufferFrames;
-		Debug.Log ("writting to frame " + frame);
-
 		float time = Time.time;
 		keyFrames [frame] = new Keyframe (Time.time, transform.position, transform.rotation);
 	}
