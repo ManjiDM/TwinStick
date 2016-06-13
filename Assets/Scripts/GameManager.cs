@@ -12,6 +12,11 @@ public class GameManager : MonoBehaviour
 	{
 		playback = false;
 
+		PlayerPrefsManager.UnlockLevel (0);
+		print (PlayerPrefsManager.IsLevelUnlocked (1));
+		print (PlayerPrefsManager.IsLevelUnlocked (2));
+		print (PlayerPrefsManager.IsLevelUnlocked (0));
+
 	}
 	
 	// Update is called once per frame
